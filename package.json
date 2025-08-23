@@ -13,6 +13,6 @@
     "react-dom": "18.2.0",
     "file-type": "21.0.0",
     "node-fetch": "3.3.2",
-    "FormData": "0.10.1"
+    "form-data": "0.10.1"
   }
 }
