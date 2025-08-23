@@ -1,6 +1,7 @@
 {
-  "name": "my-api",
-  "version": "1.0.0",
+  "name": "vortex-rest-api",
+  "version": "1.0.5",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
