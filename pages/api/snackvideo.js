@@ -5,6 +5,7 @@
 
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { addRequestApi } from '../../utils/addRequestApi.js'
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -49,6 +50,7 @@ export default async function handler(req, res) {
     if (!download) {
       return res.status(404).json({ error: "Download link not found" });
     }
+    await addRequestApi('Dl Snack Video API');
 
     return res.status(200).json({
       status: "success",
