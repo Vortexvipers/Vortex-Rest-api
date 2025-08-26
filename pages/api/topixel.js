@@ -49,10 +49,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "No image uploaded" });
     }
 
-    const image = await Jimp.read(fileBuffer);
+    // batas ukuran file (misal max 5MB)
+    if (fileBuffer.length > 5 * 1024 * 1024) {
+      return res.status(413).json({ error: "File too large (max 5MB)" });
+    }
+
+    let image;
+    try {
+      image = await Jimp.read(fileBuffer);
+    } catch (err) {
+      return res.status(400).json({ error: "Unsupported image format" });
+    }
+
     const small = image
       .clone()
       .resize(pixelSize, pixelSize, Jimp.RESIZE_NEAREST_NEIGHBOR);
+
     const pixelated = small.resize(
       image.bitmap.width,
       image.bitmap.height,
@@ -64,6 +76,7 @@ export default async function handler(req, res) {
     res.setHeader("Content-Type", "image/jpeg");
     return res.send(buffer);
   } catch (e) {
+    console.error("API Error:", e);
     return res.status(500).json({ error: e.message });
   }
-}
+        }
