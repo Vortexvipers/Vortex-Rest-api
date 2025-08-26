@@ -1,47 +1,70 @@
+// lib/addRequestApi.js
+
 import axios from 'axios';
 import { Buffer } from 'buffer';
 
-const GITHUB_TOKEN = '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'; // jangan hardcode
-const OWNER = "Vortexvipers";
-const REPO = "Database-Data";
-const FILE_PATH = "requestData.json";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const OWNER = process.env.OWNER || "Vortexvipers";
+const REPO = process.env.REPO || "Database-Data";
+const FILE_PATH = process.env.FILE_PATH || "requestData.json";
 
 export async function addRequestApi(apiName) {
   try {
-    // Ambil file dari GitHub
-    const res = await axios.get(
-      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
-      { headers: { Authorization: `Bearer ${GITHUB_TOKEN}` } }
-    );
+    if (!GITHUB_TOKEN) {
+      console.error("GITHUB_TOKEN is missing");
+      return { success: false, error: "Server configuration error" };
+    }
 
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+
+    // Ambil file dari GitHub
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        'User-Agent': 'Vercel-App', // GitHub wajib: User-Agent header
+      },
+    });
+
+    // Decode konten base64
     const content = Buffer.from(res.data.content, 'base64').toString('utf8');
     let jsonData = {};
+
     try {
       jsonData = JSON.parse(content);
-    } catch {
+    } catch (e) {
+      console.warn("Failed to parse JSON, starting fresh");
       jsonData = {};
     }
 
-    // Update count
+    // Update request count
     if (!jsonData[apiName]) {
       jsonData[apiName] = { total_request: 0 };
     }
     jsonData[apiName].total_request += 1;
 
-    // Push update
+    // Push kembali ke GitHub
     await axios.put(
-      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
+      url,
       {
-        message: `Update total_request for ${apiName}`,
+        message: `Update request count for ${apiName}`,
         content: Buffer.from(JSON.stringify(jsonData, null, 2)).toString('base64'),
-        sha: res.data.sha
+        sha: res.data.sha, // wajib untuk update
       },
-      { headers: { Authorization: `Bearer ${GITHUB_TOKEN}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          'User-Agent': 'Vercel-App',
+        },
+      }
     );
 
     return { success: true, total: jsonData[apiName].total_request };
   } catch (err) {
-    console.error("Update API request count error:", err.response?.data || err.message);
-    return { success: false, error: err.response?.data || err.message };
+    console.error("GitHub API Error:", err.response?.data || err.message);
+    return {
+      success: false,
+      error: err.response?.data?.message || err.message,
+      status: err.response?.status,
+    };
   }
 }
