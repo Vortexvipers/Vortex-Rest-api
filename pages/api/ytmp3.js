@@ -1,7 +1,7 @@
 // pages/api/ytmp3.js
 
 import axios from 'axios';
-import { addRequestApi } from '../../utils/addrequestapi.js';
+import { addRequestApi } from '../../utils/addRequestApi.js';
 
 export default async function handler(req, res) {
   // Hanya izinkan metode GET
@@ -41,6 +41,7 @@ export default async function handler(req, res) {
     const response = await axios.post(convertUrl, params, { headers });
     
     // Kembalikan data hasil konversi
+    await addRequestApi('YouTube Downloader Ytmp3');
     res.status(200).json(response.data);
   } catch (error) {
     console.error('Error converting video:', error.message);
