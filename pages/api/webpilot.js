@@ -1,6 +1,7 @@
 // pages/api/webpilot.js
 
 import axios from 'axios';
+import { addRequestApi } from '../../utils/addRequestApi.js';
 
 export default async function handler(req, res) {
   // Hanya izinkan method GET
@@ -65,7 +66,7 @@ export default async function handler(req, res) {
       }
     });
 
-    // Kirim hasil sebagai JSON
+    await addRequestApi('WebPilot API');
     return res.status(200).json({
       query: query,
       chat: chat.trim(),
