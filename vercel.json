@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/verifikasiuser.html" }
+    { "source": "/", "destination": "/verifikasiuser.html" },
+    { "source": "/959", "destination": "/error.html" }
   ]
 }
