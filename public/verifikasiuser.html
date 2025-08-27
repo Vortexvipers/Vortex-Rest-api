@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Keamanan - Human Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .verification-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #7f8c8d;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .checkbox {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkbox:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .loading-container {
+            display: none;
+            margin: 30px 0;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .checkmark {
+            display: none;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+            stroke: #27ae60;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        .status-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .verifying {
+            color: #3498db;
+        }
+
+        .success {
+            color: #27ae60;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <h1>Verifikasi Manusia</h1>
+        <p>Silakan klik kotak di bawah ini untuk membuktikan bahwa Anda bukan bot.</p>
+        <button class="checkbox" id="verifyButton">
+            <span class="checkbox-text">Klik Saya</span>
+        </button>
+        <div class="loading-container" id="loadingContainer">
+            <div class="spinner"></div>
+            <svg class="checkmark" id="checkmark" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" />
+                <path class="checkmark-check" fill="none" d="M16 27l6 6 14-14" />
+            </svg>
+            <div class="status-text" id="statusText"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('verifyButton').addEventListener('click', function() {
+            const loadingContainer = document.getElementById('loadingContainer');
+            const statusText = document.getElementById('statusText');
+            const checkmark = document.getElementById('checkmark');
+
+            // Tampilkan animasi loading
+            loadingContainer.style.display = 'block';
+            statusText.textContent = 'Verifying...';
+            statusText.classList.add('verifying');
+
+            // Simulasi proses verifikasi
+            setTimeout(() => {
+                // Tampilkan centang biru
+                statusText.textContent = 'Verifikasi Berhasil!';
+                statusText.classList.remove('verifying');
+                statusText.classList.add('success');
+                loadingContainer.querySelector('.spinner').style.display = 'none';
+                checkmark.style.display = 'block';
+
+                // Redirect setelah beberapa detik
+                setTimeout(() => {
+                    window.location.href = 'docs.html';
+                }, 2000);
+            }, 2000); // Simulasi verifikasi selama 2 detik
+        });
+    </script>
+</body>
+              </html>
+              
