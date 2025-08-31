@@ -1,0 +1,16 @@
+{
+  "name": "Vortex Rest api",
+  "short_name": "Website",
+  "icons": [
+    {
+      "src": "/cee5d1d0df379bbe675fbddb84f4992e.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
