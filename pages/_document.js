@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <link rel="icon" href="/cee5d1d0df379bbe675fbddb84f4992e.jpg" type="image/jpeg" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <body>
         <Main />
